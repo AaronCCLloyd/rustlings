@@ -3,18 +3,18 @@
 // Fill in the rest of the line that has code missing! No hints, there's no
 // tricks, just get used to typing these :)
 
-// I AM NOT DONE
+enum TimeOfDay {
+    Morning,
+    Afternoon,
+    Evening,
+}
 
 fn main() {
-    // Booleans (`bool`)
+    let period_of_day = TimeOfDay::Morning;
 
-    let is_morning = true;
-    if is_morning {
-        println!("Good morning!");
-    }
-
-    let // Finish the rest of this line like the example! Or make it be false!
-    if is_evening {
-        println!("Good evening!");
+    match period_of_day {
+        TimeOfDay::Morning => println!("Good morning!"),
+        TimeOfDay::Afternoon => println!("Good afternoon!"),
+        TimeOfDay::Evening => println!("Good evening!"),
     }
 }
