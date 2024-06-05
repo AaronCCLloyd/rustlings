@@ -24,17 +24,28 @@ impl ParsePosNonzeroError {
     fn from_creation(err: CreationError) -> ParsePosNonzeroError {
         ParsePosNonzeroError::Creation(err)
     }
-    // TODO: add another error conversion function here.
-    // fn from_parseint...
+
+    fn from_parseint(err: ParseIntError) -> ParsePosNonzeroError {
+        ParsePosNonzeroError::ParseInt(err)
+    }
 }
 
 fn parse_pos_nonzero(s: &str) -> Result<PositiveNonzeroInteger, ParsePosNonzeroError> {
-    // TODO: change this to return an appropriate error instead of panicking
-    // when `parse()` returns an error.
-    let x: i64 = s.parse().unwrap();
-    PositiveNonzeroInteger::new(x).map_err(ParsePosNonzeroError::from_creation)
+    // let x: i64 = s.parse().map_err(ParsePosNonzeroError::from_parseint)?;
+    // This is the expanded version of the above which uses the `?` chaining operator.
+    let x: i64 = match s.parse() {
+        Err(err) => return Err(ParsePosNonzeroError::ParseInt(err)),
+        Ok(n) => n,
+    };
+    // PositiveNonzeroInteger::New(x).map_err(ParsePosNonzeroError::from_creation)
+    // This expands on the above line which maps the error to the ParsePosNonZeroError type from CreationError
+    let parsedResult: Result<PositiveNonzeroInteger, ParsePosNonzeroError> =
+        match PositiveNonzeroInteger::new(x) {
+            Err(err) => return Err(ParsePosNonzeroError::from_creation(err)),
+            Ok(ok) => Ok(ok),
+        };
+    parsedResult
 }
-
 // Don't change anything below this line.
 
 #[derive(PartialEq, Debug)]
